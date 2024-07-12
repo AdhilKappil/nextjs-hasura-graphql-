@@ -1,4 +1,3 @@
-// src/graphql/mutations/createJobMutation.js
 
 export const CREATE_JOB_MUTATION = `
   mutation CreateJob($title: String!, $role: String!, $location: String!, $salary: String!) {

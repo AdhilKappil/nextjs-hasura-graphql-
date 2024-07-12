@@ -1,60 +1,111 @@
 "use client"
 
-import React, { useState } from 'react';
+import React from 'react';
 import { graphqlClient } from '../graphql/client';
 import { CREATE_JOB_MUTATION } from '@/graphql/mutations/creatJobMutation'; 
+import { useFormik } from "formik";
+import { initialValues, validationSchema } from '@/validations/yupValidation';
 
 const CreateJobForm = () => {
-  const [title, setTitle] = useState('');
-  const [role, setRole] = useState('');
-  const [location, setLocation] = useState('');
-  const [salary, setSalary] = useState('');
 
-  const handleFormSubmit = async (event) => {
-    event.preventDefault();
-
-    try {
-      // Convert salary to integer before sending to mutation
+const { values, handleChange, handleSubmit, errors, touched } = useFormik({
+    initialValues: initialValues,
+    validationSchema: validationSchema,
+    onSubmit: async (values) => {
+      try {
       const variables = {
-        title,
-        role,
-        location,
-        salary
+        title:values.title,
+        role:values.role,
+        location:values.location,
+        salary:values.salary
       };
-
       const { insert_job_one } = await graphqlClient.request(CREATE_JOB_MUTATION, variables);
-      console.log('Created job:', insert_job_one);
-      // Optionally, handle success (e.g., show confirmation message, clear form)
     } catch (error) {
       console.error('Error creating job:', error);
-      // Optionally, handle error (e.g., show error message)
     }
-  };
+    },
+  });
 
   return (
-    <form onSubmit={handleFormSubmit}>
-      <label>
-        Title:
-        <input type="text" value={title} onChange={(e) => setTitle(e.target.value)} required />
-      </label>
-      <br />
-      <label>
-        Role:
-        <input type="text" value={role} onChange={(e) => setRole(e.target.value)} required />
-      </label>
-      <br />
-      <label>
-        Location:
-        <input type="text" value={location} onChange={(e) => setLocation(e.target.value)} required />
-      </label>
-      <br />
-      <label>
-        Salary:
-        <input type="text" value={salary} onChange={(e) => setSalary(e.target.value)} required />
-      </label>
-      <br />
-      <button type="submit">Create Job</button>
+    <div className="mt-10 flex flex-col justify-center items-center md:justify-start">
+    <p className="font-Sans text-primary text-center text-2xl font-bold md:leading-tight md:text-left">
+      Create new job<br/>
+    </p>
+    <form
+      className="flex flex-col items-stretch pt-3 md:pt-8"
+      onSubmit={handleSubmit}
+    >
+      <div className="flex flex-col pt-4">
+        <div className="relative flex overflow-hidden rounded-md border-2 transition focus-within:border-blue-600">
+          <input
+            name="title"
+            value={values.title}
+            onChange={handleChange}
+            placeholder="Title"
+            type="text"
+            className="w-full flex-shrink appearance-none border-gray-300 bg-white py-2 px-4 text-base text-gray-700 placeholder-gray-400 focus:outline-none"
+          />
+        </div>
+        {errors.title && touched.title && (
+          <div className="text-red-500">{errors.title}</div>
+        )}
+      </div>
+      <div className="mb-4 flex flex-col pt-4">
+        <div className="relative flex overflow-hidden rounded-md border-2 transition focus-within:border-blue-600">
+          <input
+            name="role"
+            type="text"
+            id="text"
+            value={values.role}
+            onChange={handleChange}
+            className="w-full flex-shrink appearance-none border-gray-300 bg-white py-2 px-4 text-base text-gray-700 placeholder-gray-400 focus:outline-none"
+            placeholder="Role"
+          />
+        </div>
+        {errors.role && touched.role && (
+          <div className="text-red-500">{errors.role}</div>
+        )}
+      </div>
+      <div className="flex flex-col">
+        <div className="relative flex overflow-hidden rounded-md border-2 transition focus-within:border-blue-600">
+          <input
+            name="salary"
+            value={values.salary}
+            onChange={handleChange}
+            placeholder="Salary"
+            type="text"
+            className="w-full flex-shrink appearance-none border-gray-300 bg-white py-2 px-4 text-base text-gray-700 placeholder-gray-400 focus:outline-none"
+          />
+        </div>
+        {errors.salary && touched.salary && (
+          <div className="text-red-500">{errors.salary}</div>
+        )}
+      </div>
+      <div className="mb-4 flex flex-col pt-4">
+        <div className="relative flex overflow-hidden rounded-md border-2 transition focus-within:border-blue-600">
+          <input
+            name="location"
+            type="text"
+            id="location"
+            value={values.location}
+            onChange={handleChange}
+            className="w-full flex-shrink appearance-none border-gray-300 bg-white py-2 px-4 text-base text-gray-700 placeholder-gray-400 focus:outline-none"
+            placeholder="Location"
+          />
+        </div>
+        {errors.location && touched.location && (
+          <div className="text-red-500">{errors.location}</div>
+        )}
+      </div>
+
+      <button
+        type="submit"
+        className="bg-primary hover:bg-black w-full text-white p-2 rounded-md"
+      >
+        Create
+      </button>
     </form>
+  </div>
   );
 };
 
