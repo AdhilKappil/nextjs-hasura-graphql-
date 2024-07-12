@@ -7,9 +7,9 @@ import CreateJob from '@/components/CreateJob';
 const Home = () => {
   return (
     <main>
-       <div className='flex p-10'>
-          <div className='w-[20%] flex justify-center items-center'><CreateJob/></div>
-          <div className='w-[80%] rounded-lg border-2 p-3 shadow-md'><JobList/></div>
+       <div className='flex-col-1 md:flex p-10 gap-5'>
+          <div className='lg:w-[30%] md:w-1/2 xl:w-[25%] flex justify-center items-center shadow-sm md:pb-0 pb-10 border-2 rounded-lg'><CreateJob/></div>
+          <div className='lg:w-[70%] md:w-1/2 xl:w-[75%] rounded-lg border-2 p-3 min-h-[40rem] shadow-md md:mt-0 mt-10'><JobList/></div>
        </div>
     </main>
   );

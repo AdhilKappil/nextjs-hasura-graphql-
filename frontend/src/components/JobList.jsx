@@ -6,7 +6,8 @@ import { GET_JOBS_QUERY } from "@/graphql/queries/getJobsQuery";
 import { MdDelete, MdModeEditOutline } from "react-icons/md";
 import ReactCardFlip from "react-card-flip";
 import { FaSave } from "react-icons/fa";
-import { UPDATE_JOB_MUTATION } from "@/graphql/mutations/updateJob"; // Make sure the path is correct
+import { UPDATE_JOB_MUTATION } from "@/graphql/mutations/updateJobMutation"; 
+import { DELETE_JOB_MUTATION } from "@/graphql/mutations/deleteJobMutation";
 
 const JobList = () => {
   const [jobs, setJobs] = useState([]);
@@ -47,7 +48,7 @@ const JobList = () => {
       const data = await graphqlClient.request(UPDATE_JOB_MUTATION, variables);
       setJobs((prevJobs) =>
         prevJobs.map((job) =>
-          job.id === editedJob.id ? { ...job, ...data.update_jobs.returning[0] } : job
+          job.id === editedJob.id ? { ...job, ...data.update_job_by_pk } : job
         )
       );
       setFlippedJobs((prev) => ({
@@ -59,13 +60,22 @@ const JobList = () => {
     }
   };
 
+  const handleDelete = async (id) => {
+    try {
+      await graphqlClient.request(DELETE_JOB_MUTATION, { id });
+      setJobs((prevJobs) => prevJobs.filter((job) => job.id !== id));
+    } catch (error) {
+      console.error("Error deleting job:", error);
+    }
+  };
+
   return (
     <div>
       <div className="justify-center flex">
-        <p className="font-semibold text-3xl">New jobs</p>
+        <p className="font-semibold text-3xl my-3">New jobs</p>
       </div>
       <div className="flex justify-center">
-        <div className="grid grid-cols-1 md:grid-cols-2 xl:grid-cols-3 gap-5">
+        <div className="grid grid-cols-1 md:grid-cols-1 lg:grid-cols-2 xl:grid-cols-3 ">
           {jobs.map((job, index) => (
             <ReactCardFlip
               key={job.id}
@@ -74,7 +84,7 @@ const JobList = () => {
             >
               <div
                 key="front"
-                className={`bg-${index % 3 === 0 ? "purple" : index % 3 === 1 ? "blue" : "yellow"}-100 rounded-lg shadow-lg p-4 mx-4 my-4`}
+                className={`bg-${index % 3 === 0 ? "purple" : index % 3 === 1 ? "blue" : "yellow"}-100 rounded-lg shadow-lg p-5 m-5`}
                 style={{
                   backgroundColor: index % 3 === 0 ? "#F7FCEC" : index % 3 === 1 ? "#F9F6FE" : "#FEFCEA",
                 }}
@@ -104,7 +114,7 @@ const JobList = () => {
                       >
                         <MdModeEditOutline color="white" />
                       </button>
-                      <button className="bg-primary text-white p-2 rounded-full hover:bg-gray-700">
+                      <button onClick={()=>handleDelete(job.id)} className="bg-primary text-white p-2 rounded-full hover:bg-gray-700">
                         <MdDelete color="white" />
                       </button>
                     </div>

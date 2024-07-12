@@ -27,8 +27,8 @@ const { values, handleChange, handleSubmit, errors, touched } = useFormik({
   });
 
   return (
-    <div className="mt-10 flex flex-col justify-center items-center md:justify-start">
-    <p className="font-Sans text-primary text-center text-2xl font-bold md:leading-tight md:text-left">
+    <div className="flex flex-col justify-center items-center md:justify-start">
+    <p className=" text-primary text-center text-2xl font-bold md:leading-tight md:text-left">
       Create new job<br/>
     </p>
     <form
