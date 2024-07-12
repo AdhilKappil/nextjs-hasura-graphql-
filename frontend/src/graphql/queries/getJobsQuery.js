@@ -1,6 +1,6 @@
 import { gql } from 'graphql-request';
 
-// for getting all the jobs
+// Query to get all jobs
 export const GET_JOBS_QUERY = `
   query GetJobs {
     job {

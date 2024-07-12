@@ -1,12 +1,14 @@
 // src/app/page.js
 
 import React from "react";
-import JobList from "@/components/JobList"; // Adjust path based on your project setup
-import CreateJob from "@/components/CreateJob";
+import JobList from "@/app/components/jobList"; // Adjust path based on your project setup
+import CreateJob from "@/app/components/createJob";
+import { DynamicProvider } from "@/context/context";
 
 const Home = () => {
   return (
     <main>
+      <DynamicProvider>
       <div className="flex-col-1 md:flex p-6 gap-5">
         <div className="lg:w-[30%] md:w-1/2 xl:w-[25%] flex justify-center items-center shadow-sm md:pb-0 pb-10 border-2 rounded-lg">
           <CreateJob />
@@ -15,6 +17,7 @@ const Home = () => {
           <JobList />
         </div>
       </div>
+      </DynamicProvider>
     </main>
   );
 };
