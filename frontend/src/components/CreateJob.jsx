@@ -1,5 +1,4 @@
 "use client"
-// src/components/CreateJobForm.jsx
 
 import React, { useState } from 'react';
 import { graphqlClient } from '../graphql/client';
@@ -20,7 +19,7 @@ const CreateJobForm = () => {
         title,
         role,
         location,
-        salary: parseInt(salary, 10), // Parse string to integer
+        salary
       };
 
       const { insert_job_one } = await graphqlClient.request(CREATE_JOB_MUTATION, variables);
