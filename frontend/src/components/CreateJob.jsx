@@ -100,7 +100,7 @@ const { values, handleChange, handleSubmit, errors, touched } = useFormik({
 
       <button
         type="submit"
-        className="bg-primary hover:bg-black w-full text-white p-2 rounded-md"
+        className="bg-primary hover:bg-gray-800 w-full text-white p-2 rounded-md"
       >
         Create
       </button>

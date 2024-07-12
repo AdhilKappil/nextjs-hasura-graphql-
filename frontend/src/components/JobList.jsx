@@ -2,30 +2,53 @@
 
 import React, { useEffect, useState } from "react";
 import { graphqlClient } from "../graphql/client";
-import { GET_JOBS_QUERY } from "@/graphql/queries/getJobsQuery";
+import { GET_JOBS_BY_ROLE_QUERY, GET_JOBS_QUERY } from "@/graphql/queries/getJobsQuery";
 import { MdDelete, MdModeEditOutline } from "react-icons/md";
 import ReactCardFlip from "react-card-flip";
 import { FaSave } from "react-icons/fa";
 import { UPDATE_JOB_MUTATION } from "@/graphql/mutations/updateJobMutation"; 
 import { DELETE_JOB_MUTATION } from "@/graphql/mutations/deleteJobMutation";
+import { IoMdMenu } from "react-icons/io";
 
 const JobList = () => {
   const [jobs, setJobs] = useState([]);
   const [flippedJobs, setFlippedJobs] = useState({});
   const [editedJob, setEditedJob] = useState({ id: '', title: '', role: '', location: '', salary: '' });
+  const [uniqueRoles, setUniqueRoles] = useState([]);
+  const [selectedRole, setSelectedRole] = useState('');
+
 
   useEffect(() => {
-    const fetchJobs = async () => {
+    const fetchJobs = async (role) => {
       try {
-        const data = await graphqlClient.request(GET_JOBS_QUERY);
+        const data = selectedRole
+        ? await fetchJobsByRole(selectedRole)
+        : await graphqlClient.request(GET_JOBS_QUERY);
         setJobs(data.job);
+        if (!role) {
+          const roles = data.job.map(job => job.role);
+          setUniqueRoles([...new Set(roles)]);
+        }
       } catch (error) {
         console.error("Error fetching jobs:", error);
       }
     };
+    fetchJobs(selectedRole);
+  }, [selectedRole]);
 
-    fetchJobs();
-  }, []);
+
+  const fetchJobsByRole = async (role) => {
+    try {
+      const data = await graphqlClient.request(GET_JOBS_BY_ROLE_QUERY, {
+        role,
+      });
+      return data;
+    } catch (error) {
+      console.error('Error fetching jobs by role:', error);
+      throw error;
+    }
+  };
+
 
   const handleClick = (job) => {
     setFlippedJobs((prev) => ({
@@ -69,13 +92,42 @@ const JobList = () => {
     }
   };
 
+  const [isDropdownOpen, setIsDropdownOpen] = useState(false);
+
+  const handleMenuClick = () => {
+    setIsDropdownOpen(!isDropdownOpen);
+  };
+
+
+  const handleRoleClick = (role) => {
+    setSelectedRole(role);
+    setIsDropdownOpen(false);
+  };
+
   return (
-    <div>
-      <div className="justify-center flex">
-        <p className="font-semibold text-3xl my-3">New jobs</p>
+    <div className="md:h-[40rem] overflow-y-auto scrollbar-hide">
+       <div className="relative">
+        <div className="flex justify-center items-center gap-3 text-primary font-Sans text-3xl font-medium">
+          <div onClick={handleMenuClick} className="relative">
+            <IoMdMenu />
+            {isDropdownOpen && (
+              <div className="absolute z-10 top-full left-0 mt-2 w-48 origin-top-left rounded bg-white py-1 shadow-lg ring-1 ring-black ring-opacity-5 focus:outline-none">
+                {uniqueRoles.map((role)=>(
+                    <button
+                    className="block px-4 py-2 text-sm text-gray-600"
+                    onClick={() => handleRoleClick(role)}
+                  >
+                    {role}
+                  </button>
+                ))}
+              </div>
+            )}
+          </div>
+          New Jobs
+        </div>
       </div>
       <div className="flex justify-center">
-        <div className="grid grid-cols-1 md:grid-cols-1 lg:grid-cols-2 xl:grid-cols-3 ">
+        <div className="grid grid-cols-1 md:grid-cols-1 lg:grid-cols-2 xl:grid-cols-3">
           {jobs.map((job, index) => (
             <ReactCardFlip
               key={job.id}
@@ -84,7 +136,7 @@ const JobList = () => {
             >
               <div
                 key="front"
-                className={`bg-${index % 3 === 0 ? "purple" : index % 3 === 1 ? "blue" : "yellow"}-100 rounded-lg shadow-lg p-5 m-5`}
+                className={`bg-${index % 3 === 0 ? "purple" : index % 3 === 1 ? "blue" : "yellow"}-100 rounded-lg min-w-72 shadow-lg p-5 m-5`}
                 style={{
                   backgroundColor: index % 3 === 0 ? "#F7FCEC" : index % 3 === 1 ? "#F9F6FE" : "#FEFCEA",
                 }}
