@@ -14,6 +14,7 @@ import { DELETE_JOB_MUTATION } from "@/graphql/mutations/deleteJobMutation";
 import { IoMdMenu } from "react-icons/io";
 import { useDynamicContext } from "@/context/context";
 import Swal from 'sweetalert2';
+import toast from "react-hot-toast";
 
 
 const JobList = () => {
@@ -91,6 +92,7 @@ const JobList = () => {
         salary: editedJob.salary,
       };
       const data = await graphqlClient.request(UPDATE_JOB_MUTATION, variables);
+      toast.success("Successfuly updated")
       setJobs((prevJobs) =>
         prevJobs.map((job) =>
           job.id === editedJob.id ? { ...job, ...data.update_job_by_pk } : job
@@ -182,7 +184,7 @@ const JobList = () => {
                     : index % 3 === 1
                     ? "blue"
                     : "yellow"
-                }-100 rounded-lg min-w-72 shadow-lg p-5 m-5 h-[15rem] relative`}
+                }-100 rounded-lg min-w-72 shadow-lg p-5 m-5 h-[15rem] relative lg:hover:translate-x-4 lg:transition lg:duration-300 hover:cursor-pointer`}
                 style={{
                   backgroundColor:
                     index % 3 === 0
@@ -255,7 +257,7 @@ const JobList = () => {
                   </button>
                   <div className="flex items-center border-b border-teal-500 py-1">
                     <input
-                      className="appearance-none bg-transparent border-none w-full text-gray-700 mr-3 py-1 px-2 leading-tight focus:outline-none"
+                      className="appearance-none bg-transparent border-none w-full text-gray-700 mr-3 py-2 px-2 leading-tight focus:outline-none"
                       type="text"
                       value={editedJob.title}
                       onChange={(e) =>
@@ -267,7 +269,7 @@ const JobList = () => {
                   </div>
                   <div className="flex items-center border-b border-teal-500 py-2">
                     <input
-                      className="appearance-none bg-transparent border-none w-full text-gray-700 mr-3 py-1 px-2 leading-tight focus:outline-none"
+                      className="appearance-none bg-transparent border-none w-full text-gray-700 mr-3 py-2 px-2 leading-tight focus:outline-none"
                       type="text"
                       value={editedJob.role}
                       onChange={(e) =>
@@ -279,7 +281,7 @@ const JobList = () => {
                   </div>
                   <div className="flex items-center border-b border-teal-500 py-2">
                     <input
-                      className="appearance-none bg-transparent border-none w-full text-gray-700 mr-3 py-1 px-2 leading-tight focus:outline-none"
+                      className="appearance-none bg-transparent border-none w-full text-gray-700 mr-3 py-2 px-2 leading-tight focus:outline-none"
                       type="text"
                       value={editedJob.salary}
                       onChange={(e) =>
@@ -291,7 +293,7 @@ const JobList = () => {
                   </div>
                   <div className="flex items-center border-b border-teal-500 py-2">
                     <input
-                      className="appearance-none bg-transparent border-none w-full text-gray-700 mr-3 py-1 px-2 leading-tight focus:outline-none"
+                      className="appearance-none bg-transparent border-none w-full text-gray-700 mr-3 py-2 mb-2 px-2 leading-tight focus:outline-none"
                       type="text"
                       value={editedJob.location}
                       onChange={(e) =>
