@@ -6,6 +6,7 @@ import { CREATE_JOB_MUTATION } from "@/graphql/mutations/creatJobMutation";
 import { useFormik } from "formik";
 import { initialValues, validationSchema } from "@/validations/yupValidation";
 import { useDynamicContext } from "@/context/context";
+import toast from "react-hot-toast";
 
 const CreateJobForm = () => {
   const { dynamic, setDynamic } = useDynamicContext();
@@ -26,6 +27,7 @@ const CreateJobForm = () => {
           CREATE_JOB_MUTATION,
           variables
         );
+        toast.success("Successfuly created")
         setDynamic(!dynamic);
         resetForm(); // Reset form fields to initial values
       } catch (error) {

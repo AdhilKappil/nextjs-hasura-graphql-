@@ -1,5 +1,4 @@
-// src/app/page.js
-
+import toast, { Toaster } from 'react-hot-toast';
 import React from "react";
 import JobList from "@/app/components/jobList"; // Adjust path based on your project setup
 import CreateJob from "@/app/components/createJob";
@@ -16,6 +15,7 @@ const Home = () => {
         <div className="lg:w-[70%] md:w-1/2 xl:w-[75%] rounded-lg border-2 p-3 md:min-h-[40rem] shadow-md md:mt-0 mt-10">
           <JobList />
         </div>
+        <Toaster toastOptions={{duration:2000}}/>
       </div>
       </DynamicProvider>
     </main>

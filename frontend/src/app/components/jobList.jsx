@@ -13,6 +13,8 @@ import { UPDATE_JOB_MUTATION } from "@/graphql/mutations/updateJobMutation";
 import { DELETE_JOB_MUTATION } from "@/graphql/mutations/deleteJobMutation";
 import { IoMdMenu } from "react-icons/io";
 import { useDynamicContext } from "@/context/context";
+import Swal from 'sweetalert2';
+
 
 const JobList = () => {
   const [jobs, setJobs] = useState([]);
@@ -104,13 +106,31 @@ const JobList = () => {
   };
 
   // handling delete job
+  
   const handleDelete = async (id) => {
-    try {
-      await graphqlClient.request(DELETE_JOB_MUTATION, { id });
-      setJobs((prevJobs) => prevJobs.filter((job) => job.id !== id));
-    } catch (error) {
-      console.error("Error deleting job:", error);
-    }
+    Swal.fire({
+      title: 'Are you sure?',
+      text: "You won't be able to revert this!",
+      icon: 'warning',
+      showCancelButton: true,
+      confirmButtonColor: '#3085d6',
+      cancelButtonColor: '#d33',
+      confirmButtonText: 'Yes, delete it!'
+    }).then(async (result) => {
+      if (result.isConfirmed) {
+        try {
+          await graphqlClient.request(DELETE_JOB_MUTATION, { id });
+          setJobs((prevJobs) => prevJobs.filter((job) => job.id !== id));
+          Swal.fire(
+            'Deleted!',
+            'Your job has been deleted.',
+            'success'
+          );
+        } catch (error) {
+          console.error("Error deleting job:", error);
+        }
+      }
+    });
   };
 
 // Here handling the drop down filter options
@@ -162,7 +182,7 @@ const JobList = () => {
                     : index % 3 === 1
                     ? "blue"
                     : "yellow"
-                }-100 rounded-lg min-w-72 shadow-lg p-5 m-5`}
+                }-100 rounded-lg min-w-72 shadow-lg p-5 m-5 h-[15rem] relative`}
                 style={{
                   backgroundColor:
                     index % 3 === 0
@@ -186,7 +206,7 @@ const JobList = () => {
                       <i className="fas fa-arrow-right"></i>
                     </div>
                   </div>
-                  <div className="flex justify-between items-center mt-4 border-t pt-4">
+                  <div className="flex justify-between items-center mt-4 border-t absolute bottom-5 w-[85%] pt-4">
                     <div className="flex items-center">
                       <span className="text-gray-600">{job.role}</span>
                     </div>
