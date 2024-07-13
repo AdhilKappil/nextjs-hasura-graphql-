@@ -41,7 +41,7 @@ This project is a Full Stack CRUD Application built with Next.js for the fronten
 1. Clone the repository: `git clone <repository-url>`
 2. Navigate to the project directory: `cd <destination>`
 3. Install dependencies: `npm install ` / `npm install nodemon -g`
-4. 4. Set up your environment variables
+4. Set up your environment variables
   - NEXT_PUBLIC_HASURA_GRAPHQL_ENDPOINT=<your_hasura_endpoint>
   - NEXT_PUBLIC_HASURA_ADMIN_SECRET=<your_hasura_admin_secret>
 5. Start the server: `npm run dev`
