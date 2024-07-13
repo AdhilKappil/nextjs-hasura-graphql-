@@ -9,6 +9,7 @@ export const GET_JOBS_QUERY = `
       role
       location
       salary
+      created_at
     }
   }
 `;
@@ -23,6 +24,7 @@ export const GET_JOBS_BY_ROLE_QUERY = gql`
       role
       location
       salary
+      created_at
     }
   }
 `;

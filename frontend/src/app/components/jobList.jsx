@@ -15,6 +15,7 @@ import { IoMdMenu } from "react-icons/io";
 import { useDynamicContext } from "@/context/context";
 import Swal from 'sweetalert2';
 import toast from "react-hot-toast";
+import { getTimeDifference } from "../utils/dateFormating";
 
 
 const JobList = () => {
@@ -26,6 +27,7 @@ const JobList = () => {
     role: "",
     location: "",
     salary: "",
+    created_at:"",
   });
   const [uniqueRoles, setUniqueRoles] = useState([]);
   const [selectedRole, setSelectedRole] = useState("");
@@ -203,11 +205,15 @@ const JobList = () => {
                     <div className="">
                       <h2 className="text-2xl font-medium">{job.title}</h2>
                     </div>
+                  </div>
                     <div className="flex justify-between items-center mt-2 text-gray-400">
                       <span>{job.location}</span>
                       <i className="fas fa-arrow-right"></i>
                     </div>
-                  </div>
+                    <div className="flex justify-between items-center mt-2 text-gray-400">
+                      <span> {getTimeDifference(job.created_at)}</span>
+                      <i className="fas fa-arrow-right"></i>
+                    </div>
                   <div className="flex justify-between items-center mt-4 border-t absolute bottom-5 w-[85%] pt-4">
                     <div className="flex items-center">
                       <span className="text-gray-600">{job.role}</span>
