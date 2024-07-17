@@ -1,9 +1,9 @@
-# Full Stack CRUD Application
+# Job Portal Application:
 
 ![MIT License](3.gif)
 ## Project Overview
 
-This project is a Full Stack CRUD Application built with Next.js for the frontend and Hasura for the backend API server. The application allows users to create, read, update, delete, and filter job postings based on the role.
+This project is a Full Stack Job Portal Application: built with Next.js for the frontend and Hasura for the backend API server. The application allows users to create, read, update, delete, and filter job postings based on the role.
 
 ## Technologies Used:
 
@@ -12,6 +12,7 @@ This project is a Full Stack CRUD Application built with Next.js for the fronten
 - Next.js
 - Javascript
 - Tailwind CSS
+- GraphQL API
 
 ## Backend
 
